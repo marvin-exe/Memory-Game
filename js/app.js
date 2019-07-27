@@ -40,24 +40,39 @@ function actToClick(evt) {
 
 // Responds to click on card
 cardFlip.addEventListener("click", actToClick);
+if (openCards.length == 2) {
+  checkCards();
+}
 
 // Add card to open list
 function addToOpen(card) {
   openCards.push(card);
   console.log(openCards);
-  if (openCards.length == 2) {
+}
+
+// compare cards
+function checkCards() {
+  if (openCards[0] == openCards[1]) {
     cardMatch();
+  } else {
+    cardUnmatch();
   }
 }
 
-// card match
+//when cards match
 function cardMatch() {
   firstCard = openCards[0];
   secondCard = openCards[1];
-  if (firstCard == secondCard) {
-    firstCard.parentElement.className = "card match";
-    secondCard.parentElement.className = "card match";
-  }
+  firstCard.parentElement.className = "card match";
+  secondCard.parentElement.className = "card match";
+}
+
+// when cards do not match
+function cardUnmatch() {
+  firstCard = openCards[0];
+  secondCard = openCards[1];
+  firstCard.parentElement.className = "card";
+  secondCard.parentElement.className = "card";
 }
 
 /*
