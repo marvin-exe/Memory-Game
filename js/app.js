@@ -9,6 +9,7 @@
  *   - add each card's HTML to the page
  */
 
+let allCards = [];
 let openCards = [];
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -34,15 +35,15 @@ function actToClick(evt) {
   if (evt.target.tagName == "LI") {
     evt.target.className = "card open show";
     addToOpen(evt.target.firstElementChild);
-    console.log(evt.target.firstElementChild);
+    console.log(evt.target.firstElementChild.classList[1]);
+    if (openCards.length > 1) {
+      checkCards();
+    }
   }
 }
 
 // Responds to click on card
 cardFlip.addEventListener("click", actToClick);
-if (openCards.length == 2) {
-  checkCards();
-}
 
 // Add card to open list
 function addToOpen(card) {
@@ -52,27 +53,24 @@ function addToOpen(card) {
 
 // compare cards
 function checkCards() {
-  if (openCards[0] == openCards[1]) {
+  if (openCards[0].classList[1] == openCards[1].classList[1]) {
     cardMatch();
   } else {
-    cardUnmatch();
+    setTimeout(cardUnmatch(), 1000);
   }
+  openCards = [];
 }
 
 //when cards match
 function cardMatch() {
-  firstCard = openCards[0];
-  secondCard = openCards[1];
-  firstCard.parentElement.className = "card match";
-  secondCard.parentElement.className = "card match";
+  openCards[0].parentElement.className = "card match";
+  openCards[1].parentElement.className = "card match";
 }
 
 // when cards do not match
 function cardUnmatch() {
-  firstCard = openCards[0];
-  secondCard = openCards[1];
-  firstCard.parentElement.className = "card";
-  secondCard.parentElement.className = "card";
+  openCards[0].parentElement.className = "card";
+  openCards[1].parentElement.className = "card";
 }
 
 /*
