@@ -35,7 +35,6 @@ function actToClick(evt) {
   if (evt.target.tagName == "LI") {
     evt.target.className = "card open show";
     addToOpen(evt.target.firstElementChild);
-    console.log(evt.target.firstElementChild.classList[1]);
     if (openCards.length > 1) {
       checkCards();
     }
@@ -48,29 +47,27 @@ cardFlip.addEventListener("click", actToClick);
 // Add card to open list
 function addToOpen(card) {
   openCards.push(card);
-  console.log(openCards);
 }
 
 // compare cards
 function checkCards() {
   if (openCards[0].classList[1] == openCards[1].classList[1]) {
     cardMatch();
+    openCards = [];
   } else {
-    setTimeout(cardUnmatch(), 1000);
+    // when cards dont match
+    setTimeout(function() {
+      openCards[0].parentElement.className = "card";
+      openCards[1].parentElement.className = "card";
+      openCards = [];
+    }, 1000);
   }
-  openCards = [];
 }
 
 //when cards match
 function cardMatch() {
   openCards[0].parentElement.className = "card match";
   openCards[1].parentElement.className = "card match";
-}
-
-// when cards do not match
-function cardUnmatch() {
-  openCards[0].parentElement.className = "card";
-  openCards[1].parentElement.className = "card";
 }
 
 /*
