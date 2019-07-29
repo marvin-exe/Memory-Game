@@ -33,6 +33,7 @@ let numberMoves = 0;
 const cardFlip = document.querySelector(".deck");
 const deck = cardFlip.children;
 const resetGame = document.querySelector(".restart");
+let stars = document.querySelector(".stars");
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -54,6 +55,7 @@ function shuffle(array) {
 
 // Responds to click on card
 cardFlip.addEventListener("click", actToClick);
+reduceStars();
 
 // Responds to click on reset button
 resetGame.addEventListener("click", restartGame());
@@ -121,6 +123,17 @@ function moveCounter() {
 function shuffleCards() {
   shuffle(allCards);
   document.querySelectorAll(".card").firstElementChild.className;
+}
+
+//reduce stars
+function reduceStars() {
+  if (numberMoves > 11) {
+    stars.children[0].style.display = "none";
+  } else if (numberMoves > 19) {
+    stars.children[1].style.display = "none";
+  } else if (numberMoves > 25) {
+    stars.children[2].style.display = "none";
+  }
 }
 
 /*
