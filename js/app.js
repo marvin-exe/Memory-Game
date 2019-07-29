@@ -9,7 +9,24 @@
  *   - add each card's HTML to the page
  */
 
-let allCards = [];
+let allCards = [
+  "fa-diamond",
+  "fa-diamond",
+  "fa-paper-plane-o",
+  "fa-paper-plane-o",
+  "fa-anchor",
+  "fa-anchor",
+  "fa-bolt",
+  "fa-bolt",
+  "fa-cube",
+  "fa-cube",
+  "fa-leaf",
+  "fa-leaf",
+  "fa-bicycle",
+  "fa-bicycle",
+  "fa-bomb",
+  "fa-bomb"
+];
 let openCards = [];
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -24,16 +41,22 @@ function shuffle(array) {
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
+    console.log("shuffle");
   }
 
   return array;
 }
 
-// flips card
+// Responds to click on card
 const cardFlip = document.querySelector(".deck");
+cardFlip.addEventListener("click", actToClick);
+
+// Responds to click on reset button
+const resetGame = document.querySelector(".fa-repeat");
+resetGame.addEventListener("click", restartGame());
+
+// flips card
 function actToClick(evt) {
-  moveCounter();
-  console.log("counter");
   if (evt.target.tagName == "LI") {
     evt.target.className = "card open show";
     addToOpen(evt.target.firstElementChild);
@@ -43,16 +66,19 @@ function actToClick(evt) {
   }
 }
 
-// Responds to click on card
-cardFlip.addEventListener("click", actToClick);
-
 // Add card to open list
 function addToOpen(card) {
   openCards.push(card);
 }
 
+//Restart Game
+function restartGame() {
+  console.log("restart");
+}
+
 // compare cards
 function checkCards() {
+  moveCounter();
   if (openCards[0].classList[1] == openCards[1].classList[1]) {
     cardMatch();
     openCards = [];
@@ -74,21 +100,26 @@ function cardMatch() {
 
 // move counter
 function moveCounter() {
-  let numberMoves = 0;
-  console.log(numberMoves);
-  if (openCards.length == 1) {
-    numberMoves += 1;
-    console.log(numberMoves);
+  numberMoves = 0;
+  if (openCards.length > 1) {
+    ++numberMoves;
     document.querySelector(".moves").innerHTML = numberMoves + " Moves";
   }
 }
+
+// shuffle cards
+function shuffleCards() {
+  shuffle(allCards);
+  document.querySelectorAll(".card").firstElementChild.className;
+}
+
 /*
- * DONE!!--- set up the event listener for a card. If a card is clicked:
- * DONE!!--- - display the card's symbol (put this functionality in another function that you call from this one)
- * DONE!!--- - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- * DONE!!--- - if the list already has another card, check to see if the two cards match
- * DONE!!---   + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- * DONE!!---   + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
+ *  set up the event listener for a card. If a card is clicked:
+ *  - display the card's symbol (put this functionality in another function that you call from this one)
+ *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+ *  - if the list already has another card, check to see if the two cards match
+ *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
+ *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
