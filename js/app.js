@@ -28,6 +28,11 @@ let allCards = [
   "fa-bomb"
 ];
 let openCards = [];
+let matchedCards = [];
+let numberMoves = 0;
+const cardFlip = document.querySelector(".deck");
+const deck = cardFlip.children;
+const resetGame = document.querySelector(".restart");
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -48,11 +53,9 @@ function shuffle(array) {
 }
 
 // Responds to click on card
-const cardFlip = document.querySelector(".deck");
 cardFlip.addEventListener("click", actToClick);
 
 // Responds to click on reset button
-const resetGame = document.querySelector(".fa-repeat");
 resetGame.addEventListener("click", restartGame());
 
 // flips card
@@ -73,7 +76,14 @@ function addToOpen(card) {
 
 //Restart Game
 function restartGame() {
-  console.log("restart");
+  mixedCards = shuffle(allCards);
+  let index = 0;
+  for (item of deck) {
+    item.className = "card";
+    item.children.className = `fa ${mixedCards[index]}`;
+    index++;
+  }
+  console.log("end restart");
 }
 
 // compare cards
@@ -81,6 +91,7 @@ function checkCards() {
   moveCounter();
   if (openCards[0].classList[1] == openCards[1].classList[1]) {
     cardMatch();
+    matchedCards.push(...openCards);
     openCards = [];
   } else {
     // when cards dont match
@@ -100,10 +111,9 @@ function cardMatch() {
 
 // move counter
 function moveCounter() {
-  numberMoves = 0;
   if (openCards.length > 1) {
     ++numberMoves;
-    document.querySelector(".moves").innerHTML = numberMoves + " Moves";
+    document.querySelector(".moves").innerHTML = "Moves " + numberMoves;
   }
 }
 
