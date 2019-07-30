@@ -33,7 +33,7 @@ let numberMoves = 0;
 const cardFlip = document.querySelector(".deck");
 const deck = cardFlip.children;
 const resetGame = document.querySelector(".restart");
-let stars = document.querySelector(".stars");
+const stars = document.querySelector(".stars");
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -55,9 +55,10 @@ function shuffle(array) {
 
 // Responds to click on card
 cardFlip.addEventListener("click", actToClick);
+startTimer();
 
 // Responds to click on reset button
-resetGame.addEventListener("click", restartGame());
+resetGame.addEventListener("click", restartGame);
 
 // flips card
 function actToClick(evt) {
@@ -78,13 +79,23 @@ function addToOpen(card) {
 
 //Restart Game
 function restartGame() {
+  openCards = [];
+  matchedCards = [];
+  numberMoves = 0;
   mixedCards = shuffle(allCards);
   let index = 0;
+  // flips card back to original position
   for (item of deck) {
     item.className = "card";
     item.children.className = `fa ${mixedCards[index]}`;
+    console.log("after shuffle");
     index++;
   }
+  // show stars again
+  for (star of stars) {
+    star.style.display = "";
+  }
+  clearInterval();
   console.log("end restart");
 }
 
@@ -114,28 +125,35 @@ function cardMatch() {
 // move counter
 function moveCounter() {
   if (openCards.length > 1) {
-    ++numberMoves;
+    numberMoves++;
     document.querySelector(".moves").innerHTML = "Moves - " + numberMoves;
   }
 }
 
-// shuffle cards
-function shuffleCards() {
-  shuffle(allCards);
-  // document.querySelectorAll(".card").firstElementChild.className;
-}
-
 //reduce stars
 function reduceStars() {
-  if (numberMoves > 11) {
+  if (numberMoves > 10) {
     stars.children[0].style.display = "none";
   }
-  if (numberMoves > 19) {
+  if (numberMoves > 14) {
     stars.children[1].style.display = "none";
   }
-  if (numberMoves > 25) {
+  if (numberMoves > 17) {
     stars.children[2].style.display = "none";
   }
+}
+
+// timer function
+function startTimer() {
+  clearInterval();
+  let sec = 0;
+  function pad(val) {
+    return val > 9 ? val : "0" + val;
+  }
+  setInterval(function timer() {
+    document.getElementById("seconds").innerHTML = pad(++sec % 60);
+    document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10));
+  }, 1000);
 }
 
 /*
