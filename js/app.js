@@ -55,7 +55,6 @@ function shuffle(array) {
 
 // Responds to click on card
 cardFlip.addEventListener("click", actToClick);
-reduceStars();
 
 // Responds to click on reset button
 resetGame.addEventListener("click", restartGame());
@@ -65,6 +64,7 @@ function actToClick(evt) {
   if (evt.target.tagName == "LI") {
     evt.target.className = "card open show";
     addToOpen(evt.target.firstElementChild);
+    reduceStars();
     if (openCards.length > 1) {
       checkCards();
     }
@@ -115,23 +115,25 @@ function cardMatch() {
 function moveCounter() {
   if (openCards.length > 1) {
     ++numberMoves;
-    document.querySelector(".moves").innerHTML = "Moves " + numberMoves;
+    document.querySelector(".moves").innerHTML = "Moves - " + numberMoves;
   }
 }
 
 // shuffle cards
 function shuffleCards() {
   shuffle(allCards);
-  document.querySelectorAll(".card").firstElementChild.className;
+  // document.querySelectorAll(".card").firstElementChild.className;
 }
 
 //reduce stars
 function reduceStars() {
   if (numberMoves > 11) {
     stars.children[0].style.display = "none";
-  } else if (numberMoves > 19) {
+  }
+  if (numberMoves > 19) {
     stars.children[1].style.display = "none";
-  } else if (numberMoves > 25) {
+  }
+  if (numberMoves > 25) {
     stars.children[2].style.display = "none";
   }
 }
