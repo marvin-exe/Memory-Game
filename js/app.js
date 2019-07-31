@@ -59,9 +59,9 @@ function shuffle(array) {
   return array;
 }
 
+startTimer();
 // Responds to click on card
 cardFlip.addEventListener("click", actToClick);
-startTimer();
 
 // Responds to click on reset button
 resetGame.addEventListener("click", restartGame);
@@ -89,6 +89,7 @@ function restartGame() {
   matchedCards = [];
   numberMoves = 0;
   mixedCards = shuffle(allCards);
+
   let index = 0;
 
   // flips card back to original position
@@ -111,6 +112,7 @@ function restartGame() {
   timerSecs.textContent = "00";
   stopTimer();
   console.log("end restart");
+  startTimer();
 }
 
 // compare cards
