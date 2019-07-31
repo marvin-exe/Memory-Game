@@ -33,7 +33,7 @@ let numberMoves = 0;
 const cardFlip = document.querySelector(".deck");
 const deck = cardFlip.children;
 const resetGame = document.querySelector(".restart");
-const stars = document.querySelector(".stars");
+const stars = document.getElementsByClassName("stars")[0].children;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -83,6 +83,7 @@ function restartGame() {
   matchedCards = [];
   numberMoves = 0;
   mixedCards = shuffle(allCards);
+  // clearInterval(startTimer());
   let index = 0;
   // flips card back to original position
   for (item of deck) {
@@ -92,10 +93,11 @@ function restartGame() {
     index++;
   }
   // show stars again
+  let starIndex = 0;
   for (star of stars) {
     star.style.display = "";
   }
-  clearInterval();
+  stopTimer();
   console.log("end restart");
 }
 
@@ -133,27 +135,31 @@ function moveCounter() {
 //reduce stars
 function reduceStars() {
   if (numberMoves > 10) {
-    stars.children[0].style.display = "none";
+    stars[0].style.display = "none";
   }
   if (numberMoves > 14) {
-    stars.children[1].style.display = "none";
+    stars[1].style.display = "none";
   }
   if (numberMoves > 17) {
-    stars.children[2].style.display = "none";
+    stars[2].style.display = "none";
   }
 }
 
-// timer function
+// start timer function
 function startTimer() {
-  clearInterval();
   let sec = 0;
   function pad(val) {
     return val > 9 ? val : "0" + val;
   }
-  setInterval(function timer() {
+  function timer() {
     document.getElementById("seconds").innerHTML = pad(++sec % 60);
     document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10));
-  }, 1000);
+  }
+  let testTimer = setInterval(timer, 1000);
+}
+
+function stopTimer() {
+  clearInterval(startTimer);
 }
 
 /*
