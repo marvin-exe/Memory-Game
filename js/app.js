@@ -1,14 +1,3 @@
-/*
- * Create a list that holds all of your cards
- */
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
 let allCards = [
   "fa-diamond",
   "fa-diamond",
@@ -36,10 +25,15 @@ const resetGame = document.querySelector(".restart");
 const stars = document.getElementsByClassName("stars")[0].children;
 const timerMins = document.querySelector("#timer .minutes");
 const timerSecs = document.querySelector("#timer .seconds");
+const modalMins = document.querySelector('.modal-body .mins');
+const modalSeconds = document.querySelector('.modal-body .seconds');
+const modalRating = document.querySelector('.modal-body .rating');
+const modalMoves = document.querySelector('.modal-body .moves-count');
 let timer = undefined;
 let elapsedSeconds = 0;
 let min = 0;
 let sec = 0;
+let rating = 3
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -88,6 +82,7 @@ function restartGame() {
   openCards = [];
   matchedCards = [];
   numberMoves = 0;
+  rating = 3;
   mixedCards = shuffle(allCards);
 
   let index = 0;
@@ -122,6 +117,7 @@ function checkCards() {
     cardMatch();
     matchedCards.push(...openCards);
     openCards = [];
+    gameWin();
   } else {
     // when cards dont match
     setTimeout(function() {
@@ -136,6 +132,7 @@ function checkCards() {
 function cardMatch() {
   openCards[0].parentElement.className = "card match";
   openCards[1].parentElement.className = "card match";
+
 }
 
 // move counter
@@ -148,14 +145,17 @@ function moveCounter() {
 
 //reduce stars
 function reduceStars() {
-  if (numberMoves > 10) {
-    stars[0].style.display = "none";
+  if (numberMoves > 17) {
+    rating--
+    stars[2].style.display = "none";
   }
-  if (numberMoves > 14) {
+  if (numberMoves > 25) {
+    rating--
     stars[1].style.display = "none";
   }
-  if (numberMoves > 17) {
-    stars[2].style.display = "none";
+  if (numberMoves > 30) {
+    rating--
+    stars[0].style.display = "none";
   }
 }
 
@@ -164,10 +164,12 @@ function startTimer() {
   timer = setInterval(setTime, 1000);
 }
 
+// stop timer
 function stopTimer() {
   clearInterval(timer);
 }
 
+// timer heart
 function setTime() {
   let remainderSeconds = ++elapsedSeconds;
   min = parseInt(remainderSeconds / 60);
@@ -177,7 +179,43 @@ function setTime() {
   timerSecs.textContent = stringTime(sec);
 }
 
+// timer display
 function stringTime(val) {
   let valString = val + "";
   return valString.length >= 2 ? `${val}` : `0${val}`;
+}
+
+
+function gameWin(){
+  if (matchedCards.length === 16){
+    stopTimer();
+    openModal();
+  }
+}
+
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal <----change this to display when win
+function openModal() {
+  modalMins.textContent = min > 0 ? `${min} minutes, ` : '';
+  modalSeconds.textContent = `${sec} seconds`;
+  modalMoves.textContent = `${numberMoves} moves`;
+  modalRating.textContent = rating;
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
 }
