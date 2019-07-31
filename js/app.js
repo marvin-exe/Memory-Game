@@ -34,6 +34,12 @@ const cardFlip = document.querySelector(".deck");
 const deck = cardFlip.children;
 const resetGame = document.querySelector(".restart");
 const stars = document.getElementsByClassName("stars")[0].children;
+const timerMins = document.querySelector("#timer .minutes");
+const timerSecs = document.querySelector("#timer .seconds");
+let timer = undefined;
+let elapsedSeconds = 0;
+let min = 0;
+let sec = 0;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -83,8 +89,8 @@ function restartGame() {
   matchedCards = [];
   numberMoves = 0;
   mixedCards = shuffle(allCards);
-  // clearInterval(startTimer());
   let index = 0;
+
   // flips card back to original position
   for (item of deck) {
     item.className = "card";
@@ -92,11 +98,17 @@ function restartGame() {
     console.log("after shuffle");
     index++;
   }
+
   // show stars again
   let starIndex = 0;
   for (star of stars) {
     star.style.display = "";
   }
+  elapsedSeconds = 0;
+  min = 0;
+  sec = 0;
+  timerMins.textContent = "00";
+  timerSecs.textContent = "00";
   stopTimer();
   console.log("end restart");
 }
@@ -147,28 +159,23 @@ function reduceStars() {
 
 // start timer function
 function startTimer() {
-  let sec = 0;
-  function pad(val) {
-    return val > 9 ? val : "0" + val;
-  }
-  function timer() {
-    document.getElementById("seconds").innerHTML = pad(++sec % 60);
-    document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10));
-  }
-  let testTimer = setInterval(timer, 1000);
+  timer = setInterval(setTime, 1000);
 }
 
 function stopTimer() {
-  clearInterval(startTimer);
+  clearInterval(timer);
 }
 
-/*
- *  set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+function setTime() {
+  let remainderSeconds = ++elapsedSeconds;
+  min = parseInt(remainderSeconds / 60);
+  timerMins.textContent = stringTime(min);
+  remainderSeconds = remainderSeconds % 60;
+  sec = remainderSeconds;
+  timerSecs.textContent = stringTime(sec);
+}
+
+function stringTime(val) {
+  let valString = val + "";
+  return valString.length >= 2 ? `${val}` : `0${val}`;
+}
