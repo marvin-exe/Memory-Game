@@ -25,15 +25,16 @@ const resetGame = document.querySelector(".restart");
 const stars = document.getElementsByClassName("stars")[0].children;
 const timerMins = document.querySelector("#timer .minutes");
 const timerSecs = document.querySelector("#timer .seconds");
-const modalMins = document.querySelector('.modal-body .mins');
-const modalSeconds = document.querySelector('.modal-body .seconds');
-const modalRating = document.querySelector('.modal-body .rating');
-const modalMoves = document.querySelector('.modal-body .moves-count');
+const modalMins = document.querySelector(".modal-body .mins");
+const modalSeconds = document.querySelector(".modal-body .seconds");
+const modalRating = document.querySelector(".modal-body .rating");
+const modalMoves = document.querySelector(".modal-body .moves-count");
+const modalReplay = document.querySelector(".modal-replay-btn");
 let timer = undefined;
 let elapsedSeconds = 0;
 let min = 0;
 let sec = 0;
-let rating = 3
+let rating = 3;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -79,6 +80,7 @@ function addToOpen(card) {
 
 //Restart Game
 function restartGame() {
+  closeModal()
   openCards = [];
   matchedCards = [];
   numberMoves = 0;
@@ -90,7 +92,7 @@ function restartGame() {
   // flips card back to original position
   for (item of deck) {
     item.className = "card";
-    item.children.className = `fa ${mixedCards[index]}`;
+    item.firstElementChild.className = `fa ${mixedCards[index]}`;
     console.log("after shuffle");
     index++;
   }
@@ -124,7 +126,7 @@ function checkCards() {
       openCards[0].parentElement.className = "card";
       openCards[1].parentElement.className = "card";
       openCards = [];
-    }, 1000);
+    }, 700);
   }
 }
 
@@ -132,7 +134,6 @@ function checkCards() {
 function cardMatch() {
   openCards[0].parentElement.className = "card match";
   openCards[1].parentElement.className = "card match";
-
 }
 
 // move counter
@@ -146,15 +147,15 @@ function moveCounter() {
 //reduce stars
 function reduceStars() {
   if (numberMoves > 17) {
-    rating--
+    rating--;
     stars[2].style.display = "none";
   }
   if (numberMoves > 25) {
-    rating--
+    rating--;
     stars[1].style.display = "none";
   }
   if (numberMoves > 30) {
-    rating--
+    rating--;
     stars[0].style.display = "none";
   }
 }
@@ -185,23 +186,25 @@ function stringTime(val) {
   return valString.length >= 2 ? `${val}` : `0${val}`;
 }
 
-
-function gameWin(){
-  if (matchedCards.length === 16){
+function gameWin() {
+  if (matchedCards.length === 16) {
     stopTimer();
     openModal();
   }
 }
 
 // Get the modal
-var modal = document.getElementById("myModal");
+let modal = document.getElementById("myModal");
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+let span = document.getElementsByClassName("close")[0];
+
+// Modal replay Button
+modalReplay.addEventListener("click", restartGame);
 
 // When the user clicks on the button, open the modal <----change this to display when win
 function openModal() {
-  modalMins.textContent = min > 0 ? `${min} minutes, ` : '';
+  modalMins.textContent = min > 0 ? `${min} minutes, ` : "";
   modalSeconds.textContent = `${sec} seconds`;
   modalMoves.textContent = `${numberMoves} moves`;
   modalRating.textContent = rating;
@@ -209,13 +212,17 @@ function openModal() {
 }
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+span.onclick = closeModal;
+
+function closeModal() {
   modal.style.display = "none";
-}
+};
+
+
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
-}
+};
