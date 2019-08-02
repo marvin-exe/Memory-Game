@@ -35,6 +35,7 @@ let elapsedSeconds = 0;
 let min = 0;
 let sec = 0;
 let rating = 3;
+let cardsFlipped = 0;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -48,27 +49,33 @@ function shuffle(array) {
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
-    console.log("shuffle");
   }
 
   return array;
 }
-
-startTimer();
-// Responds to click on card
-cardFlip.addEventListener("click", actToClick);
-
-// Responds to click on reset button
-resetGame.addEventListener("click", restartGame);
+function startGame() {
+  restartGame();
+  // Responds to click on card
+  cardFlip.addEventListener("click", actToClick);
+  // Responds to click on reset button
+  resetGame.addEventListener("click", restartGame);
+}
 
 // flips card
 function actToClick(evt) {
-  if (evt.target.tagName == "LI") {
-    evt.target.className = "card open show";
-    addToOpen(evt.target.firstElementChild);
-    reduceStars();
-    if (openCards.length > 1) {
-      checkCards();
+  console.log(evt.target.firstElementChild);
+  if(openCards.length < 2 && !openCards.includes(evt.target.firstElementChild)){
+    if (evt.target.tagName == "LI") {
+      evt.target.className = "card open show";
+      if (cardsFlipped == 0) {
+        startTimer();
+      }
+      cardsFlipped++;
+      addToOpen(evt.target.firstElementChild);
+      reduceStars();
+      if (openCards.length > 1) {
+        checkCards();
+      }
     }
   }
 }
@@ -76,24 +83,26 @@ function actToClick(evt) {
 // Add card to open list
 function addToOpen(card) {
   openCards.push(card);
+  console.log(openCards);
 }
 
 //Restart Game
 function restartGame() {
-  closeModal()
+  closeModal();
   openCards = [];
   matchedCards = [];
   numberMoves = 0;
+  document.querySelector(".moves").innerHTML = "Moves - " + numberMoves;
   rating = 3;
   mixedCards = shuffle(allCards);
+  cardsFlipped = 0;
 
   let index = 0;
 
-  // flips card back to original position
+  // flips card back to original position and shuffles them
   for (item of deck) {
     item.className = "card";
     item.firstElementChild.className = `fa ${mixedCards[index]}`;
-    console.log("after shuffle");
     index++;
   }
 
@@ -102,14 +111,13 @@ function restartGame() {
   for (star of stars) {
     star.style.display = "";
   }
+  // reset timer
   elapsedSeconds = 0;
   min = 0;
   sec = 0;
   timerMins.textContent = "00";
   timerSecs.textContent = "00";
   stopTimer();
-  console.log("end restart");
-  startTimer();
 }
 
 // compare cards
@@ -147,15 +155,15 @@ function moveCounter() {
 //reduce stars
 function reduceStars() {
   if (numberMoves > 17) {
-    rating--;
+    rating = 2;
     stars[2].style.display = "none";
   }
   if (numberMoves > 25) {
-    rating--;
+    rating = 1;
     stars[1].style.display = "none";
   }
   if (numberMoves > 30) {
-    rating--;
+    rating = 0;
     stars[0].style.display = "none";
   }
 }
@@ -170,7 +178,7 @@ function stopTimer() {
   clearInterval(timer);
 }
 
-// timer heart
+// timer function
 function setTime() {
   let remainderSeconds = ++elapsedSeconds;
   min = parseInt(remainderSeconds / 60);
@@ -202,7 +210,6 @@ let span = document.getElementsByClassName("close")[0];
 // Modal replay Button
 modalReplay.addEventListener("click", restartGame);
 
-// When the user clicks on the button, open the modal <----change this to display when win
 function openModal() {
   modalMins.textContent = min > 0 ? `${min} minutes, ` : "";
   modalSeconds.textContent = `${sec} seconds`;
@@ -216,9 +223,7 @@ span.onclick = closeModal;
 
 function closeModal() {
   modal.style.display = "none";
-};
-
-
+}
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -226,3 +231,5 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 };
+
+startGame();
