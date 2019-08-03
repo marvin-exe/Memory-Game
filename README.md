@@ -9,6 +9,6 @@ A personal take on the traditional memory game also known as Concentration.
 
 The point of the game is to match all cards on the deck. You win the game when all cards are matched.
 
-## Dependancies
+## Dependencies
 - Shuffle function from http://stackoverflow.com/a/2450976  
 - Icons for the cards taken from [Font Awesome](https://fontawesome.com/icons?d=gallery)
