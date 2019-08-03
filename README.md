@@ -5,7 +5,8 @@ A personal take on the traditional memory game also known as Concentration.
 - Click on one card to flip it  
 - Click on a second card to see if it matches the first one  
 - If they match they will remain flipped  
-- If they don't match, they will return to their original position  
+- If they don't match, they will return to their original position
+
 The point of the game is to match all cards on the deck. You win the game when all cards are matched.
 
 ## Dependancies
