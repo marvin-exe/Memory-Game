@@ -205,3 +205,17 @@ h1 {
 .modal-replay-btn:hover{
   cursor: pointer
 }
+
+@media screen and (min-device-width: 360px){
+  .container h1 {
+    font-size: 3em;
+  }
+
+  .score-panel {
+    width: 600px;
+  }
+
+  .score-panel {
+    font-size: 2em;
+  }
+}
