@@ -154,7 +154,7 @@ function moveCounter() {
 
 //reduce stars
 function reduceStars() {
-  if (numberMoves > 17) {
+  if (numberMoves > 16) {
     rating = 2;
     stars[2].style.display = "none";
   }
@@ -162,10 +162,7 @@ function reduceStars() {
     rating = 1;
     stars[1].style.display = "none";
   }
-  if (numberMoves > 30) {
-    rating = 0;
-    stars[0].style.display = "none";
-  }
+
 }
 
 // start timer function
